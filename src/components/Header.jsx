@@ -17,6 +17,7 @@ import Loader from "./Loader";
 import axiosInstance from "../api/axiosInstance";
 import { useUser } from "../context/User";
 import SharePopup from "./SharePopup";
+import SnackAlert from "./SnackBarElement";
 
 const pages = ["Challenge Friend"];
 const settings = ["Logout"];
@@ -28,6 +29,8 @@ export default function Header() {
   const [showChallengeModal, setShowModalChallenge] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showErrorSnack, setShowErrorSnack] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [inviteLink, setInviteLink] = useState("");
 
   const handleOpenNavMenu = (event) => {
@@ -58,7 +61,9 @@ export default function Header() {
       setInviteLink(inviteLink); // Set the invite link
       setShowPopup(true); // Show the popup
     } catch (error) {
+      setShowErrorSnack(true);
       console.log("Error while challengin user", error);
+      setErrorMessage(error?.response?.data?.message);
     } finally {
       setIsLoading(false);
     }
@@ -196,6 +201,11 @@ export default function Header() {
         open={showPopup}
         onClose={() => setShowPopup()}
         inviteLink={inviteLink}
+      />
+      <SnackAlert
+        open={showErrorSnack}
+        setOpen={() => setShowErrorSnack(false)}
+        message={errorMessage}
       />
     </AppBar>
   );
