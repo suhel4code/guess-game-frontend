@@ -12,12 +12,14 @@ import {
 import { useUser } from "../context/User";
 import axiosInstance from "../api/axiosInstance";
 import ErrorAlert from "./ErrorAlert";
+import Loader from "./Loader";
 
 export default function Login() {
   const { user, login } = useUser();
   const [name, setName] = useState("");
   const [isError, setIsError] = useState(false); // Track validation error
   const [loginError, setLoginError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function Login() {
 
   async function handleLogin(isCreateUser = false) {
     if (!validateInput()) return; // Stop if input is invalid
-
+    setIsLoading(true);
     try {
       let res;
       if (isCreateUser) {
@@ -62,6 +64,8 @@ export default function Login() {
     } catch (error) {
       console.error("Error while logging in:", error);
       setLoginError(error?.response?.data?.message);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -142,6 +146,7 @@ export default function Login() {
           />
         )}
       </Paper>
+      <Loader open={isLoading} />
     </Container>
   );
 }
