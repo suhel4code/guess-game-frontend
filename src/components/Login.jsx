@@ -112,6 +112,7 @@ export default function Login() {
         <Grid container spacing={2} justifyContent="center">
           <Grid item>
             <Button
+              data-testid="log-in-button"
               variant="contained"
               color="primary"
               onClick={() => handleLogin(false)}
@@ -123,6 +124,7 @@ export default function Login() {
           </Grid>
           <Grid item>
             <Button
+              data-testid="create-user"
               variant="outlined"
               color="secondary"
               onClick={() => handleLogin(true)}
